@@ -1,0 +1,21 @@
+@commands.command()
+@commands.has_role(854739386776289331)
+async def win(self, ctx, user: discord.User):
+    link = await self.bot.get_guild(DIV3).text_channels[0].create_invite(max_age = 86400, max_uses = 1, unique = True)
+    dmchannel = await user.create_dm()
+    embed=discord.Embed(title="Invite", description="Congratulations on winning one of our matches!", color=0x030303)
+    embed.add_field(name="Single use invite:", value=link, inline=True)
+    embed.set_footer(text="This is an automated message. Please contact an administrator if the invite link expires.")
+    await dmchannel.send(embed=embed)
+
+    embed2 =discord.Embed(title="Invite Created", color=0xFFD700)
+    embed2.add_field(name="Creator:", value=ctx.message.author.mention, inline=True)
+    embed2.add_field(name="Reason:", value="RANKED WINNER", inline=True)
+    embed2.add_field(name="For:", value=f"{user.mention} // ``{user.id}``", inline=False)
+    embed2.add_field(name="Invite Link:", value=link, inline=False)
+    embed2.timestamp = datetime.datetime.now()
+    await self.bot.get_channel(LOGS).send(embed=embed2)
+
+    embed=discord.Embed(description="The invite has been sent to the user", color=0x030303)
+    await ctx.send(embed=embed, delete_after=5)
+    await ctx.message.delete()
